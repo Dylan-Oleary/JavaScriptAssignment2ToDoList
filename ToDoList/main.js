@@ -1,35 +1,19 @@
-
-
-// Step 1 - Select and store the tbody HTML Element.
-// INSIGHT: We'll be storing the item entires in the
-// tbody. Storing this HTMLElement will give us better
-// access to add new items.
+//Store the Table Body
 var tBody = document.querySelector('tbody');
 
-// Step 2 - Select and store the item template HTML Element.
-// INSIGHT: HTML templates are handy for keeping your
-// HTML out of your JavaScript. This makes portability easier.
-var item = document.querySelector('#itemTemplate');
+//Store the HTML template
+var itemTemplate = document.querySelector('#itemTemplate');
 
-// Step 3 - Select and store the following HTML Elements:
-// INSIGHT: This form will give the user the ability to
-// provide information about a new to do item.
-// Step 3a - The Item Name field
+//Store the item name input field
 var itemName = document.querySelector('input[name="itemName"]');
 
-// Step 3b - The Due Date field
+//Store the due date input field
 var dueDate = document.querySelector('input[name="dueDate"]');
 
-// Step 3c - The 'Create New Item' button for adding a new item
-// INSIGHT: We'll listen to the click event on this
-// button. That should tell us the user is ready to
-// add the information to a new item.
+//Store the create new item button
 var createNewItem = document.querySelector('#addNewItem');
 
-// Step 4 - Add a click event listener to the HTML Element
-// you stored in Step 3c (should've been the 'Create New Item')
-// button.
-
+//Add a click listener to createNewItem button and create a new item and add it to the list
 createNewItem.addEventListener('click', function (){
   //Check if itemName and dueDate are blank, if so alert the user and exit the function
   if(itemName.value == "" && dueDate.value == ""){
@@ -72,36 +56,74 @@ createNewItem.addEventListener('click', function (){
 function removeItem(event){
   //The child of the tBody is a tr (tableRow). The child we are removing is the closest table row to the event target
   // This is the table row that contains the clicked DELETE button
-  tBody.removeChild(event.target.closest('tr'));
+  var userChoice = confirm('Are you sure you want to delete this task?');
+  if(userChoice == true){
+    tBody.removeChild(event.target.closest('tr'));
+  }else{
+    return false;
+  }
 };
   
 //This function allows the user to edit a list item
 function editItem(event){
 
   //Store the row to be edited in a variable
-  let itemToEdit = event.target.closest('tr');
+  var itemToEdit = event.target.closest('tr');
+
+  //Store all variables for table interactivity
+  let successButton = itemToEdit.querySelector('.item-success');
+  let editButton = itemToEdit.querySelector('.item-edit');
+  let itemNameCell = itemToEdit.querySelector('.item-entry');
+  let itemDueDateCell = itemToEdit.querySelector('.item-due-date');
+
+  //Switch edit button for successful edit button
+  successButton.classList.remove('buttonInvisible');
+  editButton.classList.add('buttonInvisible');
   
   //Add the CONTENTEDITABLE attribute to the item for inline editing
   //NOTE: WE DO NOT WANT TO ALLOW THE USER TO EDIT THE BUTTONS, WE EXCLUDE THEM
-  itemToEdit.setAttribute('contenteditable', 'true');
-  itemToEdit.querySelector('.item-actions').removeAttribute('contenteditable');  
-
-  //Trigger focus on the element
-  itemToEdit.focus();
+  itemNameCell.setAttribute('contenteditable', true);
+  itemDueDateCell.setAttribute('contenteditable', true);
   
-  //Add a blur event listener to the item. Blur occurs when an item has lost focus
-  //In this context, when the user clicks off of the item, it will no longer be editable
-  //until they click the EDIT button again
-  itemToEdit.addEventListener('blur', function(){
-    itemToEdit.removeAttribute('contenteditable');
-  })
+  //Trigger focus on the item name entry cell
+  itemNameCell.focus();
+  
+  //When selecting the due date cell, switch the cell to a date picker
+  itemDueDateCell.addEventListener('focus', function(){
+    //Create the date input
+    let dueDateSelector = '<input name="newDueDate" type="date" class="tableDate form-control">';
+
+    //Remove the contenteditable, so as to not allow user keystrokes
+    itemDueDateCell.removeAttribute('contenteditable');
+
+    itemDueDateCell.innerHTML = dueDateSelector;
+  });
+  
+  //Event listener to finish the item editing process
+  successButton.addEventListener('click', function(){
+    //Step 1 - Remove the success button and display the edit button
+    successButton.classList.add('buttonInvisible');
+    editButton.classList.remove('buttonInvisible');
+
+    //Step 2 - Make the content uneditable
+    itemNameCell.removeAttribute('contenteditable');
+
+    //Update the date to reflect the new Date
+    var newDueDate = document.querySelector('input[name="newDueDate"]');
+    originalDueDateCell = '<td class="item-due-date">' + newDueDate.value + '</td>';
+    itemDueDateCell.innerHTML = originalDueDateCell;
+
+    //Reset the new due date value for more editing
+    newDueDate.value = "";
+  });
 };
 
-//This function collapses and expands the new item form
-let collapseButton = document.querySelector('#collapseButton');
+//Store the Collapse button
+var collapseButton = document.querySelector('#collapseButton');
 
 const newItemForm = document.querySelector('#newItemForm');
 
+//This function collapses and expands the new item form
 collapseButton.addEventListener('click', function(){
   if(newItemForm.classList.contains('visible')){
     newItemForm.classList.remove('visible');
@@ -111,12 +133,3 @@ collapseButton.addEventListener('click', function(){
     newItemForm.classList.add('visible');
   }
 });
-
-
-// Step 7e - Create a way for the user to edit the date:
-// INSIGHT: This will take some thought but will demonstrate
-// your understanding of JavaScript.
-
-// BONUS: Use prototyping, objects, storage solutions, frameworks,
-// and/or date plugins to demonstrate your knowledge and outside
-// learning.
