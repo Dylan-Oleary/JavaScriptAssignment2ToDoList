@@ -1,13 +1,12 @@
-/* Step 1 - Add a nice background */
 body {
-
+    background: #ec008c;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #fc6767, #ec008c);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #fc6767, #ec008c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-/* Step 2 - Add a nice card style */
-.card {
-
-}
-
+.container {
+    background-color: white;
+}    
 /* Step 3 - Add a nice hover effect */
 .card:hover {
 
@@ -22,6 +21,33 @@ body {
 #message {
 
 }
+
+.visible {
+    max-height: 210px;
+    animation: expand 0.7s;
+    overflow: hidden;
+}
+
+.nonVisible {
+    max-height: 0px;
+    overflow: hidden;
+    animation: collapse 0.7s;
+}
+
+/* Animation code for the new Item Form collapse */
+@keyframes collapse {
+    from {max-height: 210px;}
+    to {max-height: 0px;
+        overflow: hidden;}
+}
+
+@keyframes expand {
+    from{max-height: 0px;}
+    to{max-height: 210px;}
+}
+
+  
+
 
 /* Step 6 - Add 5 more style changes... */
 /* 1) */

@@ -4,6 +4,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- Step 1 - Include your styles sheet -->
+    <link rel="stylesheet" href="styles.css">
 
     <title>The To Do List</title>
   </head>
@@ -11,7 +12,7 @@
   <body>
     <div class="container">
       <header>
-        <h1>Your To Do List Title Here</h1>
+        <h1>Procrasti-NOT</h1>
       </header>
 
       <!--
@@ -23,7 +24,11 @@
         This is your form for creating a new
         to do item
       -->
-      <div id="newItemForm">
+      <button class="btn btn-danger" id="collapseButton">
+          <i class="fa fa-plus"></i>
+      </button>
+      
+      <div id="newItemForm" class="visible">
         <div class="form-group">
           <label>Item Name</label>
           <input name="itemName" class="form-control">

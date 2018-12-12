@@ -1,9 +1,4 @@
-/*
-  The Goal:
-  Build a To Do list application that allows you
-  to add a new entry, edit an existing entry, and
-  remove an existing entry.
- */
+
 
 // Step 1 - Select and store the tbody HTML Element.
 // INSIGHT: We'll be storing the item entires in the
@@ -35,114 +30,88 @@ var createNewItem = document.querySelector('#addNewItem');
 // you stored in Step 3c (should've been the 'Create New Item')
 // button.
 
-  // Step 4a - Check if item name is blank
 createNewItem.addEventListener('click', function (){
-  if(itemName.value == ""){
-    // Step 4b - Alert the user they need to enter a name
-    alert("You must enter a name");
+  //Check if itemName and dueDate are blank, if so alert the user and exit the function
+  if(itemName.value == "" && dueDate.value == ""){
+    alert("You must enter a name and due date!");
+    return false;
+  }else if(itemName.value == ""){
+    alert("You must enter a name!");
+    return false;
+  }else if(dueDate.value == ""){
+    alert("You must enter a due date!");
+    return false;
   }
+  //Store the HTML Template in a variable 
+  let content = itemTemplate.content;
+  
+  //Import the template into a new Node
+  let newItemRow = document.importNode(content, true);
+  
+  //Assign the item-entry cell the value of the the itemName user input
+  newItemRow.querySelector('.item-entry').textContent = itemName.value;
+  
+  //Assign the item-due-date cell the value of the dueDate user input
+  newItemRow.querySelector('.item-due-date').textContent = dueDate.value;  
 
-  // Step 4c - Return false to exit the event listener
-  return false;
+  //Assign removeItem function to delete button
+  newItemRow.querySelector(".item-delete").onclick = removeItem;
+  
+  //Assign editItem function to edit button
+  newItemRow.querySelector('.item-edit').onclick = editItem;
+  
+  //Reset the input fields
+  itemName.value = "";
+  dueDate.value = "";
+  
+  //Prepend the item to the top of the table body
+  tBody.prepend(newItemRow);
 });
 
-  // Step 4d - Uncomment the next line to store the template content:
-  let content = itemTemplate.content;
+//This function allows the user to remove a list item
+function removeItem(event){
+  //The child of the tBody is a tr (tableRow). The child we are removing is the closest table row to the event target
+  // This is the table row that contains the clicked DELETE button
+  tBody.removeChild(event.target.closest('tr'));
+};
+  
+//This function allows the user to edit a list item
+function editItem(event){
 
-  // Step 4e - Uncomment the next line to import the template content
-  // into a new node:
-  let newItemRow = document.importNode(content, true);
+  //Store the row to be edited in a variable
+  let itemToEdit = event.target.closest('tr');
+  
+  //Add the CONTENTEDITABLE attribute to the item for inline editing
+  //NOTE: WE DO NOT WANT TO ALLOW THE USER TO EDIT THE BUTTONS, WE EXCLUDE THEM
+  itemToEdit.setAttribute('contenteditable', 'true');
+  itemToEdit.querySelector('.item-actions').removeAttribute('contenteditable');  
 
-  // Step 4f - Using DOM walking, access the item entry cell
-  // and store the current item name value
+  //Trigger focus on the element
+  itemToEdit.focus();
+  
+  //Add a blur event listener to the item. Blur occurs when an item has lost focus
+  //In this context, when the user clicks off of the item, it will no longer be editable
+  //until they click the EDIT button again
+  itemToEdit.addEventListener('blur', function(){
+    itemToEdit.removeAttribute('contenteditable');
+  })
+};
 
+//This function collapses and expands the new item form
+let collapseButton = document.querySelector('#collapseButton');
 
-  // Step 4f - Using DOM walking, access the item due date cell
-  // and store the current due date value
+const newItemForm = document.querySelector('#newItemForm');
 
+collapseButton.addEventListener('click', function(){
+  if(newItemForm.classList.contains('visible')){
+    newItemForm.classList.remove('visible');
+    newItemForm.classList.add('nonVisible');
+  }else{
+    newItemForm.classList.remove('nonVisible');
+    newItemForm.classList.add('visible');
+  }
+});
 
-  // Step 4g - Using DOM walking, access the item delete button
-  // and make the onclick property equal to a function definition
-  // named removeItem
-
-
-  // Step 4h- Using DOM walking, access the item edit button
-  // and make the onclick property equal to a function definition
-  // named editItem
-
-
-  // Step 4i - Reset the item name field value to nothing
-
-
-  // Step 4j - Reset the due date field value to nothing
-
-
-  // Step 4k - Prepend the new item row to the to do items list
-  // INSIGHT: We're prepending as we want new items to go to the
-  // top. If you want them to be in reverse, then you will need
-  // to append them instead.
-
-
-
-
-// Step 5 - Create a new function called 'removeItem'. You will need
-// to capture the event in the parameter.
-
-  // Step 5a - Access the closest parent tr HTML element
-  // and remove it
-  // INSIGHT: .closest() is a handy method that will move up the DOM
-  // tree and attempt to find the closest ancestor that matches the
-  // passed selector.
-
-
-
-
-// Step 6 - Create a new function called 'editItem'. You will need
-// to capture the event in the parameter.
-
-  // Step 6a - Using DOM walking:
-  // First find the closest tr tag.
-  // Next, find an item entry that is a child of the tr tag.
-  // INSIGHT: DOM walking is the act of moving up and down through
-  // ancestors and children of the DOM. We can use methods like
-  // .closest() and .querySelector() to do this efficiently.
-  // Store the result in a variable
-
-
-  // Step 6b - Using the .setAttribute() method, set the attribute
-  // 'contenteditable' to true
-  // INSIGHT: Content Editable is an attribute introduced in HTML 5
-  // that allows regular non-field based HTML elements to have their
-  // text edited inline. This is a convenient feature that is utilized
-  // by many online WYSIWYG editors like TinyMCE and CKEditor.
-
-
-  // Step 6c - Trigger focus on the element
-
-
-  // Step 6d - Create an eventlistener on the blur event
-
-    // Step 6e - Remove the attribute 'contenteditable'
-    // INSIGHT: .addAttribute() and .removeAttribute() add
-    // and remove attributes applied to an HTML Element.
-
-
-
-
-
-/*
-  Step 7 - TAKE IT FURTHER
- */
-// Step 7a - Using CSS you learned in your first semester
-// style the To Do list to make it nicer than the default
-// Bootstrap stylings.
-
-// Step 7b- Hide the 'Create New Item' form.
-
-// Step 7c - Add a button that toggle the 'Create New Item's'
-// form visibility.
-
-// Step 7d - Validate the date and alert the user if it is empty.
 
 // Step 7e - Create a way for the user to edit the date:
 // INSIGHT: This will take some thought but will demonstrate
