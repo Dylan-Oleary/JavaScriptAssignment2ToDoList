@@ -11,8 +11,13 @@
 
   <body>
     <div class="container">
-      <header>
-        <h1>Procrasti-NOT</h1>
+      <header class="d-flex justify-content-between">
+        <h1 id="title" class="mx-3">Procrastinaut</h1>
+
+        <button class="btn btn-primary mx-3" id="collapseButton">
+            <i class="fa fa-caret-square-o-down"></i>
+            <i class="fa fa-angle-double-up buttonInvisible"></i>
+        </button>
       </header>
 
       <!--
@@ -23,38 +28,36 @@
       <!--
         This is your form for creating a new
         to do item
-      -->
-      <button class="btn btn-danger" id="collapseButton">
-          <i class="fa fa-plus"></i>
-      </button>
-      
+      -->      
       <div id="newItemForm" class="visible">
-        <div class="form-group">
-          <label>Item Name</label>
-          <input name="itemName" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label>Due Date</label>
-          <input name="dueDate" type="date" class="form-control">
+        <div class="row mx-1">
+          <div class="form-group col-sm-6">
+            <input name="itemName" class="form-control" placeholder="Enter your mission...">
+          </div>
+          
+          <div class="form-group col-sm-6">
+            <input name="dueDate" type="text" class="form-control" placeholder="When is the deadline?">
+          </div>
         </div>
 
         <!-- The button for adding a new to do item -->
-        <div class="form-group">
-          <button id="addNewItem" class="btn btn-primary">
-            <i class="fa fa-plus"></i>
-            Create New Item
-          </button>
+        <div class="row">
+          <div class="form-group col-12 mx-3">
+            <button id="addNewItem" class="btn btn-primary">
+              <i class="fa fa-plus"></i>
+              Add to the Mission Log!
+            </button>
+          </div>
         </div>
       </div>
 
       <!-- This is where our to do items will appear -->
       <table class="table table-striped">
         <thead>
-          <tr>
-            <th>Item</th>
-            <th>Due Date</th>
-            <th>Actions</th>
+          <tr class="d-flex">
+            <th class="col-6">Item</th>
+            <th class="col-3">Due Date</th>
+            <th class="col-3">Actions</th>
           </tr>
         </thead>
 
@@ -67,10 +70,10 @@
         to implement this is completely up to you.
       -->
       <template id="itemTemplate">
-        <tr>
-          <td class="item-entry"></td>
-          <td class="item-due-date"></td>
-          <td class="item-actions">
+        <tr class="d-flex">
+          <td class="item-entry col-6"></td>
+          <td class="item-due-date col-3"></td>
+          <td class="item-actions col-3">
 
             <!-- Button to end editing-->
             <button class="item-success buttonInvisible btn btn-success">
@@ -85,6 +88,10 @@
             <!-- Button to delete the item -->
             <button class="item-delete btn btn-danger">
               <i class="fa fa-trash"></i>
+            </button>
+
+            <button class="item-push btn btn-dark">
+                <i class="fa fa-rocket"></i>
             </button>
           </td>
         </tr>

@@ -1,15 +1,42 @@
+@font-face {
+    font-family: 'Brain Wants';
+    src: url('./fonts/Brain\ Wants\ UD.otf');
+}
+
 body {
-    background: #ec008c;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #fc6767, #ec008c);
-    background: linear-gradient(to right, #fc6767, #ec008c); 
+    background: #373B44;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4286f4, #373B44);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4286f4, #373B44); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
     height: 100%;
     width: 100%;
+}
+
+header {
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color:white;
+    background-image: url('./images/astronaut.png');
+    background-size: cover;
+    background-position-y: 25%;
+    background-position-x: 90%;;
+    font-family: 'Brain Wants';
+    margin-bottom: 2%;
+}
+
+#title {
+    font-family: 'Brain Wants';
+    font-size: 2.4rem;
 }
 
 .container {
     background-color: white;
     margin: 50px auto;
-}    
+    padding: 0px;
+    max-width: 720px;
+    border-left: 2px solid #373B44;
+    border-right: 2px solid #4286f4;
+}   
 
 .visible {
     max-height: 210px;
@@ -29,10 +56,6 @@ body {
 
 .buttonVisible {
     display: inline;
-}
-
-.tableDate {
-    
 }
 
 /* Animation code for the new Item Form collapse */

@@ -10,6 +10,15 @@ var itemName = document.querySelector('input[name="itemName"]');
 //Store the due date input field
 var dueDate = document.querySelector('input[name="dueDate"]');
 
+//Change the dueDate field to input type = date. We have to use this route if we want placeholder
+dueDate.addEventListener('focus', function(){
+  event.target.type = 'date';
+})
+
+dueDate.addEventListener('blur', function(){
+  event.target.type = 'text';
+})
+
 //Store the create new item button
 var createNewItem = document.querySelector('#addNewItem');
 
@@ -98,7 +107,7 @@ function editItem(event){
 
     itemDueDateCell.innerHTML = dueDateSelector;
   });
-  
+
   //Event listener to finish the item editing process
   successButton.addEventListener('click', function(){
     //Step 1 - Remove the success button and display the edit button
@@ -118,6 +127,34 @@ function editItem(event){
   });
 };
 
+// function pushItem(itemName, dueDate){
+//   //Store the HTML Template in a variable 
+//   let content = itemTemplate.content;
+  
+//   //Import the template into a new Node
+//   let newItemRow = document.importNode(content, true);
+  
+//   //Assign the item-entry cell the value of the the itemName user input
+//   newItemRow.querySelector('.item-entry').textContent = itemName;
+  
+//   //Assign the item-due-date cell the value of the dueDate user input
+//   newItemRow.querySelector('.item-due-date').textContent = dueDate;  
+
+//   console.log(itemName, dueDate);
+//   //Assign removeItem function to delete button
+//   newItemRow.querySelector(".item-delete").onclick = removeItem;
+  
+//   //Assign editItem function to edit button
+//   newItemRow.querySelector('.item-edit').onclick = editItem;
+
+//   //Assign pushItem function to push button
+//   newItemRow.querySelector('.item-push').onclick = function(){pushItem(itemName, dueDate)};
+    
+//   //Prepend the item to the top of the table body
+//   tBody.prepend(newItemRow);
+// };
+
+
 //Store the Collapse button
 var collapseButton = document.querySelector('#collapseButton');
 
@@ -133,3 +170,4 @@ collapseButton.addEventListener('click', function(){
     newItemForm.classList.add('visible');
   }
 });
+
