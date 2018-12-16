@@ -9,14 +9,15 @@
     <title>The To Do List</title>
   </head>
 
+
   <body>
     <div class="container">
       <header class="d-flex justify-content-between">
         <h1 id="title" class="mx-3">Procrastinaut</h1>
 
-        <button class="btn btn-primary mx-3" id="collapseButton">
-            <i class="fa fa-caret-square-o-down"></i>
-            <i class="fa fa-angle-double-up buttonInvisible"></i>
+        <button class="btn btn-dark mx-3" id="collapseButton">
+            <i class="formDown fa fa-caret-square-o-down buttonInvisible"></i>
+            <i class="formUp fa fa-caret-square-o-up buttonInvisible"></i>
         </button>
       </header>
 
@@ -55,9 +56,9 @@
       <table class="table table-striped">
         <thead>
           <tr class="d-flex">
-            <th class="col-6">Item</th>
+            <th class="col-4">Item</th>
             <th class="col-3">Due Date</th>
-            <th class="col-3">Actions</th>
+            <th class="col-5">Actions</th>
           </tr>
         </thead>
 
@@ -71,13 +72,16 @@
       -->
       <template id="itemTemplate">
         <tr class="d-flex">
-          <td class="item-entry col-6"></td>
+          <td class="item-entry col-4"></td>
           <td class="item-due-date col-3"></td>
-          <td class="item-actions col-3">
+          <td class="item-actions col-5">
+            <button class="item-push btn btn-success">
+                <i class="fa fa-check"></i>
+            </button>
 
             <!-- Button to end editing-->
-            <button class="item-success buttonInvisible btn btn-success">
-                <i class="fa fa-check"></i>
+            <button class="item-success buttonInvisible btn btn-primary">
+                <i class="fa fa-thumbs-o-up"></i>
             </button>
 
             <!-- Button to edit an item entry -->
@@ -88,10 +92,6 @@
             <!-- Button to delete the item -->
             <button class="item-delete btn btn-danger">
               <i class="fa fa-trash"></i>
-            </button>
-
-            <button class="item-push btn btn-dark">
-              <i class="fa fa-rocket"></i>
             </button>
 
             <button class="item-down btn btn-light">
@@ -105,9 +105,8 @@
         </tr>
       </template>
     </div>
-    
+  
     <!-- Step 2 - Include your JavaScript file -->
     <script type="text/javascript" src="main.js"></script>
-  </body>
-  
+  </body>  
 </html>

@@ -1,8 +1,12 @@
 //Store the Table Body
 var tBody = document.querySelector('tbody');
 
-//Store the HTML template
+//Store the HTML template for to do list and completed table
 var itemTemplate = document.querySelector('#itemTemplate');
+
+//Set Collapse Buttons To Correct State
+var collapseButton = document.querySelector('#collapseButton');
+collapseButton.querySelector('.formUp').classList.toggle('buttonInvisible');
 
 //Store the item name input field
 var itemName = document.querySelector('input[name="itemName"]');
@@ -29,6 +33,7 @@ var itemArray = [];
 function Item(name, date){
   this.name = name;
   this.date = date;
+  this.complete = false;
 }
 
 //Add a click listener to createNewItem button and create a new item and add it to the list
@@ -66,9 +71,9 @@ createNewItem.addEventListener('click', function (){
   newItemRow.querySelector(".item-delete").onclick = removeItem;
   
   //Assign editItem function to edit button
-  newItemRow.querySelector('.item-edit').onclick = editItem;
+  newItemRow.querySelector('.item-edit').onclick = function() {editItem(event, item)};
   //Assign pushItem function to push button
-  newItemRow.querySelector('.item-push').onclick = function() {pushItem(item.name, item.date)};
+  newItemRow.querySelector('.item-push').onclick = function() {statusToggle(event, item)};
 
   newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
 
@@ -96,7 +101,7 @@ function removeItem(event){
 };
   
 //This function allows the user to edit a list item
-function editItem(event){
+function editItem(event, item){
 
   //Store the row to be edited in a variable
   var itemToEdit = event.target.closest('tr');
@@ -141,36 +146,24 @@ function editItem(event){
 
     //Update the date to reflect the new Date
     var newDueDate = document.querySelector('input[name="newDueDate"]');
-    originalDueDateCell = '<td class="item-due-date">' + newDueDate.value + '</td>';
-    itemDueDateCell.innerHTML = originalDueDateCell;
+    item.date = newDueDate.value;
+    item.name = itemNameCell.textContent;
+
+    repopulateTable();
 
     //Reset the new due date value for more editing
     newDueDate.value = "";
   });
 };
 
-function pushItem(itemName, dueDate){
-  //Store the HTML Template in a variable 
-  let content = itemTemplate.content;
-  //Import the template into a new Node
-  let newItemRow = document.importNode(content, true);
-  //Assign the item-entry cell the value of the the itemName user input
-  newItemRow.querySelector('.item-entry').textContent = itemName;
-  //Assign the item-due-date cell the value of the dueDate user input
-  newItemRow.querySelector('.item-due-date').textContent = dueDate; 
-  console.log(itemName, dueDate);
-  //Assign removeItem function to delete button
-  newItemRow.querySelector(".item-delete").onclick = removeItem;
-  //Assign editItem function to edit button
-  newItemRow.querySelector('.item-edit').onclick = editItem
-  //Assign pushItem function to push button
-  newItemRow.querySelector('.item-push').onclick = function(){pushItem(itemName, dueDate)};
-
-  
-
-  //Prepend the item to the top of the table body
-  tBody.prepend(newItemRow);
-  tBody.removeChild(event.target.closest('tr'));
+function statusToggle(event, item){
+  if(item.complete === false){
+    item.complete = true;
+    event.target.closest('tr').classList.add('table-success');
+  }else{
+    item.complete = false;
+    event.target.closest('tr').classList.remove('table-success');
+  }
 };
 
 //This function repopulates the table with the itemArray
@@ -183,9 +176,7 @@ function repopulateTable(){
       node.remove();
     }
   
-    for(let item of itemArray){
-  
-    //console.log(item);
+    for(let item of itemArray){  
     //Store the HTML Template in a variable
     let content = itemTemplate.content
     
@@ -201,13 +192,19 @@ function repopulateTable(){
     newItemRow.querySelector(".item-delete").onclick = removeItem;
     
     //Assign editItem function to edit button
-    newItemRow.querySelector('.item-edit').onclick = editItem;
+    newItemRow.querySelector('.item-edit').onclick = function() {editItem(event, item)};
     //Assign pushItem function to push button
-    newItemRow.querySelector('.item-push').onclick = function() {pushItem(item.name, item.date)};
+    newItemRow.querySelector('.item-push').onclick = function() {statusToggle(event,item)};
   
     newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
 
     newItemRow.querySelector('.item-up').onclick = function() {itemUp(item)};
+
+    if(item.complete === true){
+      newItemRow.querySelector('tr').classList.add('table-success');
+    }else{
+      newItemRow.querySelector('tr').classList.remove('table-success');
+    }
       
     //Prepend the item to the top of the table body
     tBody.prepend(newItemRow);
@@ -248,10 +245,6 @@ function itemUp(item){
     repopulateTable();
 };
 
-
-//Store the Collapse button
-var collapseButton = document.querySelector('#collapseButton');
-
 const newItemForm = document.querySelector('#newItemForm');
 
 //This function collapses and expands the new item form
@@ -259,9 +252,16 @@ collapseButton.addEventListener('click', function(){
   if(newItemForm.classList.contains('visible')){
     newItemForm.classList.remove('visible');
     newItemForm.classList.add('nonVisible');
+
+    collapseButton.querySelector('.formUp').classList.toggle('buttonInvisible');
+    collapseButton.querySelector('.formDown').classList.toggle('buttonInvisible');
+
   }else{
     newItemForm.classList.remove('nonVisible');
     newItemForm.classList.add('visible');
+
+    collapseButton.querySelector('.formUp').classList.toggle('buttonInvisible');
+    collapseButton.querySelector('.formDown').classList.toggle('buttonInvisible');
   }
 });
 
