@@ -22,6 +22,15 @@ dueDate.addEventListener('blur', function(){
 //Store the create new item button
 var createNewItem = document.querySelector('#addNewItem');
 
+//Array of items
+var itemArray = [];
+
+//function to create new item object
+function Item(name, date){
+  this.name = name;
+  this.date = date;
+}
+
 //Add a click listener to createNewItem button and create a new item and add it to the list
 createNewItem.addEventListener('click', function (){
   //Check if itemName and dueDate are blank, if so alert the user and exit the function
@@ -35,23 +44,35 @@ createNewItem.addEventListener('click', function (){
     alert("You must enter a due date!");
     return false;
   }
-  //Store the HTML Template in a variable 
-  let content = itemTemplate.content;
+
+  //create item object
+  var item = new Item(itemName.value, dueDate.value);
+
+  //Store it in the items array
+  itemArray.push(item);
+
+  //Store the HTML Template in a variable
+  let content = itemTemplate.content
   
   //Import the template into a new Node
   let newItemRow = document.importNode(content, true);
   
   //Assign the item-entry cell the value of the the itemName user input
-  newItemRow.querySelector('.item-entry').textContent = itemName.value;
+  newItemRow.querySelector('.item-entry').textContent = item.name
   
   //Assign the item-due-date cell the value of the dueDate user input
-  newItemRow.querySelector('.item-due-date').textContent = dueDate.value;  
-
+  newItemRow.querySelector('.item-due-date').textContent = item.date;  
   //Assign removeItem function to delete button
   newItemRow.querySelector(".item-delete").onclick = removeItem;
   
   //Assign editItem function to edit button
   newItemRow.querySelector('.item-edit').onclick = editItem;
+  //Assign pushItem function to push button
+  newItemRow.querySelector('.item-push').onclick = function() {pushItem(item.name, item.date)};
+
+  newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
+
+  newItemRow.querySelector('.item-up').onclick = function() {itemUp(item)};
   
   //Reset the input fields
   itemName.value = "";
@@ -66,6 +87,7 @@ function removeItem(event){
   //The child of the tBody is a tr (tableRow). The child we are removing is the closest table row to the event target
   // This is the table row that contains the clicked DELETE button
   var userChoice = confirm('Are you sure you want to delete this task?');
+
   if(userChoice == true){
     tBody.removeChild(event.target.closest('tr'));
   }else{
@@ -127,32 +149,104 @@ function editItem(event){
   });
 };
 
-// function pushItem(itemName, dueDate){
-//   //Store the HTML Template in a variable 
-//   let content = itemTemplate.content;
-  
-//   //Import the template into a new Node
-//   let newItemRow = document.importNode(content, true);
-  
-//   //Assign the item-entry cell the value of the the itemName user input
-//   newItemRow.querySelector('.item-entry').textContent = itemName;
-  
-//   //Assign the item-due-date cell the value of the dueDate user input
-//   newItemRow.querySelector('.item-due-date').textContent = dueDate;  
+function pushItem(itemName, dueDate){
+  //Store the HTML Template in a variable 
+  let content = itemTemplate.content;
+  //Import the template into a new Node
+  let newItemRow = document.importNode(content, true);
+  //Assign the item-entry cell the value of the the itemName user input
+  newItemRow.querySelector('.item-entry').textContent = itemName;
+  //Assign the item-due-date cell the value of the dueDate user input
+  newItemRow.querySelector('.item-due-date').textContent = dueDate; 
+  console.log(itemName, dueDate);
+  //Assign removeItem function to delete button
+  newItemRow.querySelector(".item-delete").onclick = removeItem;
+  //Assign editItem function to edit button
+  newItemRow.querySelector('.item-edit').onclick = editItem
+  //Assign pushItem function to push button
+  newItemRow.querySelector('.item-push').onclick = function(){pushItem(itemName, dueDate)};
 
-//   console.log(itemName, dueDate);
-//   //Assign removeItem function to delete button
-//   newItemRow.querySelector(".item-delete").onclick = removeItem;
   
-//   //Assign editItem function to edit button
-//   newItemRow.querySelector('.item-edit').onclick = editItem;
 
-//   //Assign pushItem function to push button
-//   newItemRow.querySelector('.item-push').onclick = function(){pushItem(itemName, dueDate)};
+  //Prepend the item to the top of the table body
+  tBody.prepend(newItemRow);
+  tBody.removeChild(event.target.closest('tr'));
+};
+
+//This function repopulates the table with the itemArray
+function repopulateTable(){
+    //Create array of table rows
+    let tmp = Array.from(document.querySelectorAll('tbody > tr'));
+
+    //For each table row, remove
+    for(let node of tmp){
+      node.remove();
+    }
+  
+    for(let item of itemArray){
+  
+    //console.log(item);
+    //Store the HTML Template in a variable
+    let content = itemTemplate.content
     
-//   //Prepend the item to the top of the table body
-//   tBody.prepend(newItemRow);
-// };
+    //Import the template into a new Node
+    let newItemRow = document.importNode(content, true);
+    
+    //Assign the item-entry cell the value of the the itemName user input
+    newItemRow.querySelector('.item-entry').textContent = item.name
+    
+    //Assign the item-due-date cell the value of the dueDate user input
+    newItemRow.querySelector('.item-due-date').textContent = item.date;  
+    //Assign removeItem function to delete button
+    newItemRow.querySelector(".item-delete").onclick = removeItem;
+    
+    //Assign editItem function to edit button
+    newItemRow.querySelector('.item-edit').onclick = editItem;
+    //Assign pushItem function to push button
+    newItemRow.querySelector('.item-push').onclick = function() {pushItem(item.name, item.date)};
+  
+    newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
+
+    newItemRow.querySelector('.item-up').onclick = function() {itemUp(item)};
+      
+    //Prepend the item to the top of the table body
+    tBody.prepend(newItemRow);
+    }
+}
+
+//This function allows the user to bump an item up in the table, indicating greater importance!
+function itemDown(item){
+  //Store the item's index. We use index -1 because we are prepending the rows to the table
+  var index = itemArray.indexOf(item);
+  var indexBelow = index - 1;
+
+  if(index === 0){
+    return false;
+  }
+
+  //Remove item from array
+  itemArray.splice(index, 1);
+  //Insert item into the array index just below it
+  itemArray.splice(indexBelow, 0, item);
+
+  repopulateTable();
+}
+
+function itemUp(item){
+    //Store the item's index. We use index +1 because we are prepending the rows to the table
+    var index = itemArray.indexOf(item);
+
+    if(index === itemArray.length -1){
+      return false;
+    }
+  
+    //Remove item from array
+    itemArray.splice(index, 1);
+    //Insert item into the array index just above it
+    itemArray.splice(index + 1, 0, item);
+
+    repopulateTable();
+};
 
 
 //Store the Collapse button
