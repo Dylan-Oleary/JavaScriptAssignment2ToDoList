@@ -74,6 +74,13 @@ button {
     margin-bottom: 5px;
 }
 
+#popupDiv {
+    position: absolute;
+    top: 20px;
+    left: 800px;
+    color: white;
+}
+
 /* Animation code for the new Item Form collapse */
 @keyframes collapse {
     from {max-height: 210px;}

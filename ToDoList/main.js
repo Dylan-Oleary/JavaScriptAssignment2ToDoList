@@ -112,6 +112,8 @@ function editItem(event, item){
   let itemNameCell = itemToEdit.querySelector('.item-entry');
   let itemDueDateCell = itemToEdit.querySelector('.item-due-date');
 
+  var dateEdited = false;
+
   //Switch edit button for successful edit button
   successButton.classList.remove('buttonInvisible');
   editButton.classList.add('buttonInvisible');
@@ -126,6 +128,7 @@ function editItem(event, item){
   
   //When selecting the due date cell, switch the cell to a date picker
   itemDueDateCell.addEventListener('focus', function(){
+    dateEdited = true;
     //Create the date input
     let dueDateSelector = '<input name="newDueDate" type="date" class="tableDate form-control">';
 
@@ -145,16 +148,46 @@ function editItem(event, item){
     itemNameCell.removeAttribute('contenteditable');
 
     //Update the date to reflect the new Date
-    var newDueDate = document.querySelector('input[name="newDueDate"]');
-    item.date = newDueDate.value;
-    item.name = itemNameCell.textContent;
 
-    repopulateTable();
+    //if the item name is not null but we havent touched the date
+    if(itemNameCell.textContent !== "" && dateEdited === false){
+      //Store new item name and repopulate the table
+      item.name = itemNameCell.textContent;
+  
+      repopulateTable();
+    }else if(itemNameCell.textContent !== "" && dateEdited === true){ //item name is changed, date is changed
+      //if date has not been selected
+      if(itemToEdit.querySelector('input[name="newDueDate"]').value === ""){
+        alert("Edit Failed - Date cannot be blank");
 
-    //Reset the new due date value for more editing
-    newDueDate.value = "";
+        //Put date cell back to item date
+        itemToEdit.querySelector('.item-due-date').textContent = item.date;
+
+        repopulateTable();
+
+        //Reset dateEdited check variable
+        dateEdited = false;
+      }else{ //if a new date has been chosen
+        item.date = itemToEdit.querySelector('input[name="newDueDate"]').value;
+
+        //Store new item name and repopulate table
+        item.name = itemNameCell.textContent; 
+        repopulateTable();
+
+        //Reset dateEdited check variable
+        dateEdited = false;
+      }
+    }else if(itemNameCell.textContent === "" && dateEdited === false){
+      alert("Edit Failed - Item name cannot be blank");
+      repopulateTable();
+    }else if(itemNameCell.textContent === "" && dateEdited === true){
+      alert("Edit Failed - Item name cannot be blank");
+      repopulateTable();
+      dateEdited = false;
+    }
   });
 };
+
 
 function statusToggle(event, item){
   if(item.complete === false){
@@ -264,4 +297,10 @@ collapseButton.addEventListener('click', function(){
     collapseButton.querySelector('.formDown').classList.toggle('buttonInvisible');
   }
 });
+
+var successTemplate = document.querySelector('#popup');
+
+function popup(){
+  let content = successTemplate.content;
+}
 
