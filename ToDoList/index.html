@@ -12,8 +12,8 @@
 
   <body>
     <div class="container">
-      <header class="d-flex justify-content-between">
-        <h1 id="title" class="mx-3">Procrastinaut</h1>
+      <header id="logoHeader" class="d-flex justify-content-between">
+        <h1 class="title mx-3">Procrastinaut</h1>
 
         <button class="btn btn-dark mx-3" id="collapseButton">
             <i class="formDown fa fa-caret-square-o-down buttonInvisible"></i>
@@ -21,10 +21,20 @@
         </button>
       </header>
 
-      <!--
-        Below is only a suggestion. Feel free to implement this
-        however you choose. Use your imagination!
-      -->
+      <!-- Successful Edit Header-->
+      <header id="editHeader" class="invisibleHeader d-flex justify-content-between">
+        <h1 class="title mx-3">Edit Successful !</h1>
+      </header>
+
+      <!-- Successful Delete Header-->
+      <header id="deleteHeader" class="invisibleHeader d-flex justify-content-between">
+        <h1 class="title mx-3">Delete Successful !</h1>
+      </header>
+
+      <!-- Successful Addition Header -->
+      <header id="additionHeader" class="invisibleHeader d-flex justify-content-between">
+        <h1 class="title mx-3">Item Added !</h1>
+      </header>
 
       <!--
         This is your form for creating a new
@@ -75,7 +85,7 @@
           <td class="item-entry col-4"></td>
           <td class="item-due-date col-3"></td>
           <td class="item-actions col-5">
-            <button class="item-push btn btn-success">
+            <button class="item-complete btn btn-success">
                 <i class="fa fa-check"></i>
             </button>
 
@@ -103,8 +113,22 @@
             </button>
           </td>
         </tr>
+
+        <tr class="delete-row-warning d-none">
+          <td class="col-10">DELETE?</td>
+          <td class="delete-decision col-2">
+            <button class="delete-yes btn btn-warning"></button>
+            <button class="delete-no btn btn-primary"></button>
+          </td>
+        </tr>
       </template>
     </div>
+
+    <!-- <div id="deletePopup" class="popupInvisible">
+      <p> Are you sure want to delete this item? There is no going back!</p>
+      <button>Ok</button>
+      <button>No</button>
+    </div> -->
   
     <!-- Step 2 - Include your JavaScript file -->
     <script type="text/javascript" src="main.js"></script>

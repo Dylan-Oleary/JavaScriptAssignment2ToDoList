@@ -18,7 +18,7 @@ body {
     background: black;
 }
 
-header {
+#logoHeader {
     text-align: left;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -26,12 +26,46 @@ header {
     background-image: url('./images/astronaut.png');
     background-size: cover;
     background-position-y: 25%;
-    background-position-x: 90%;;
+    background-position-x: 90%;
     font-family: 'Brain Wants';
     margin-bottom: 2%;
 }
 
-#title {
+#editHeader {
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color:white;
+    font-family: 'Brain Wants';
+    margin-bottom: 2%;
+    background-color: rgb(253, 192, 47);
+}
+
+#deleteHeader {
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color:white;
+    font-family: 'Brain Wants';
+    margin-bottom: 2%;
+    background-color: rgb(217, 55, 73);
+}
+
+#additionHeader {
+    text-align: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    color:white;
+    font-family: 'Brain Wants';
+    margin-bottom: 2%;
+    background-color: rgb(48, 165, 74); 
+}
+
+.invisibleHeader {
+    display: none !important;
+}
+
+.title {
     font-family: 'Brain Wants';
     font-size: 2.4rem;
 }
@@ -74,11 +108,13 @@ button {
     margin-bottom: 5px;
 }
 
-#popupDiv {
-    position: absolute;
-    top: 20px;
-    left: 800px;
-    color: white;
+#deletePopup {
+    position: relative;
+    bottom:200px;
+}
+
+.delete-row-warning {
+    background: red;
 }
 
 /* Animation code for the new Item Form collapse */
@@ -92,3 +128,4 @@ button {
     from{max-height: 0px;}
     to{max-height: 210px;}
 }
+

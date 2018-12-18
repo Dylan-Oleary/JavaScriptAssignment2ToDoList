@@ -14,6 +14,12 @@ var itemName = document.querySelector('input[name="itemName"]');
 //Store the due date input field
 var dueDate = document.querySelector('input[name="dueDate"]');
 
+//Store the header elements
+var logoHeader = document.getElementById('logoHeader');
+var editHeader = document.getElementById('editHeader');
+var deleteHeader = document.getElementById('deleteHeader');
+var additionHeader = document.getElementById('additionHeader');
+
 //Change the dueDate field to input type = date. We have to use this route if we want placeholder
 dueDate.addEventListener('focus', function(){
   event.target.type = 'date';
@@ -68,35 +74,66 @@ createNewItem.addEventListener('click', function (){
   //Assign the item-due-date cell the value of the dueDate user input
   newItemRow.querySelector('.item-due-date').textContent = item.date;  
   //Assign removeItem function to delete button
-  newItemRow.querySelector(".item-delete").onclick = removeItem;
+  newItemRow.querySelector(".item-delete").onclick = function() {removeItem(event, item)};
   
   //Assign editItem function to edit button
   newItemRow.querySelector('.item-edit').onclick = function() {editItem(event, item)};
   //Assign pushItem function to push button
-  newItemRow.querySelector('.item-push').onclick = function() {statusToggle(event, item)};
+  newItemRow.querySelector('.item-complete').onclick = function() {statusToggle(event, item)};
 
   newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
 
   newItemRow.querySelector('.item-up').onclick = function() {itemUp(item)};
-  
+
   //Reset the input fields
   itemName.value = "";
   dueDate.value = "";
   
   //Prepend the item to the top of the table body
   tBody.prepend(newItemRow);
+
+  showAdditionHeader();
 });
 
 //This function allows the user to remove a list item
-function removeItem(event){
-  //The child of the tBody is a tr (tableRow). The child we are removing is the closest table row to the event target
-  // This is the table row that contains the clicked DELETE button
-  var userChoice = confirm('Are you sure you want to delete this task?');
+function removeItem(event, item){
+  //store the selected row
+  let selectedRow = event.target.closest('tr');
 
-  if(userChoice == true){
-    tBody.removeChild(event.target.closest('tr'));
-  }else{
-    return false;
+  //Remove row from View
+  selectedRow.classList.remove('d-flex');
+  selectedRow.classList.add('d-none');
+
+  //Insert delete warning message
+  let warningMessage = event.target.closest('tr').nextElementSibling;
+  warningMessage.classList.remove('d-none');
+  warningMessage.classList.add('d-flex');
+
+  //Store the warning message buttons
+  let deleteConfirmed = warningMessage.querySelector('.delete-yes');
+  let noDelete = warningMessage.querySelector('.delete-no');
+
+  deleteConfirmed.onclick = function(){
+    //Remove the row from the table and delete it from the itemArray
+    tBody.removeChild(selectedRow);
+    itemArray.splice(item, 1);
+
+    //Remove the warning message attached to it as well
+    tBody.removeChild(warningMessage);
+
+    //Show the delete header and repopulate the updated table reflecting the updated itemArray
+    showDeleteHeader();
+    repopulateTable(); 
+  }
+
+  noDelete.onclick = function(){
+    //Show item row again since we are not deleting the item
+    selectedRow.classList.remove('d-none');
+    selectedRow.classList.add('d-flex');
+
+    //Hide the delete warning message
+    warningMessage.classList.add('d-none');
+    warningMessage.classList.remove('d-flex');
   }
 };
   
@@ -117,6 +154,9 @@ function editItem(event, item){
   //Switch edit button for successful edit button
   successButton.classList.remove('buttonInvisible');
   editButton.classList.add('buttonInvisible');
+
+  //Disable the completion button while editing
+  itemToEdit.querySelector('.item-complete').disabled = true;
   
   //Add the CONTENTEDITABLE attribute to the item for inline editing
   //NOTE: WE DO NOT WANT TO ALLOW THE USER TO EDIT THE BUTTONS, WE EXCLUDE THEM
@@ -155,6 +195,9 @@ function editItem(event, item){
       item.name = itemNameCell.textContent;
   
       repopulateTable();
+
+      showEditHeader();
+
     }else if(itemNameCell.textContent !== "" && dateEdited === true){ //item name is changed, date is changed
       //if date has not been selected
       if(itemToEdit.querySelector('input[name="newDueDate"]').value === ""){
@@ -173,6 +216,8 @@ function editItem(event, item){
         //Store new item name and repopulate table
         item.name = itemNameCell.textContent; 
         repopulateTable();
+
+        showEditHeader();
 
         //Reset dateEdited check variable
         dateEdited = false;
@@ -227,7 +272,7 @@ function repopulateTable(){
     //Assign editItem function to edit button
     newItemRow.querySelector('.item-edit').onclick = function() {editItem(event, item)};
     //Assign pushItem function to push button
-    newItemRow.querySelector('.item-push').onclick = function() {statusToggle(event,item)};
+    newItemRow.querySelector('.item-complete').onclick = function() {statusToggle(event,item)};
   
     newItemRow.querySelector('.item-down').onclick = function() {itemDown(item)};
 
@@ -300,7 +345,32 @@ collapseButton.addEventListener('click', function(){
 
 var successTemplate = document.querySelector('#popup');
 
-function popup(){
-  let content = successTemplate.content;
+function showEditHeader(){
+  logoHeader.classList.toggle('invisibleHeader');
+  editHeader.classList.toggle('invisibleHeader');
+
+  setTimeout(function(){
+  logoHeader.classList.toggle('invisibleHeader');
+  editHeader.classList.toggle('invisibleHeader');
+  }, 2000);
 }
 
+function showDeleteHeader(){
+  logoHeader.classList.toggle('invisibleHeader');
+  deleteHeader.classList.toggle('invisibleHeader');
+
+  setTimeout(function(){
+  logoHeader.classList.toggle('invisibleHeader');
+  deleteHeader.classList.toggle('invisibleHeader');
+  }, 2000);
+}
+
+function showAdditionHeader(){
+  logoHeader.classList.toggle('invisibleHeader');
+  additionHeader.classList.toggle('invisibleHeader');
+
+  setTimeout(function(){
+  logoHeader.classList.toggle('invisibleHeader');
+  additionHeader.classList.toggle('invisibleHeader');
+  }, 2000);
+}
