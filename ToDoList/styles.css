@@ -4,9 +4,6 @@
 }
 
 body {
-    /* background: #373B44;  /* fallback for old browsers */
-    /* background: -webkit-linear-gradient(to right, #4286f4, #373B44); 
-    background: linear-gradient(to right, #4286f4, #373B44);  */
     height: 100%;
     width: 100%;
     background-image: url('./images/blueplanet.jpg');
@@ -70,9 +67,20 @@ body {
     font-size: 2.4rem;
 }
 
+.delete-prompt {
+    font-family: 'Brain Wants';
+    font-size: 2.4rem;
+    color: white;
+    padding-bottom: 0px;
+
+}
+
 .container {
     background-color: white;
-    margin: 50px auto;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 0px;
     max-width: 720px;
     border: 10px outset rgb(81, 186, 196);
@@ -114,7 +122,25 @@ button {
 }
 
 .delete-row-warning {
-    background: red;
+    background-color: rgb(217, 55, 73);
+}
+
+.delete-yes, .delete-no {
+    margin-top: 5px;
+}
+
+.footer {
+    margin: 0 auto;
+    font-size: 120px;
+    width: 80px;
+    height: 80px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+#gitHub{
+    filter: brightness(0) saturate(100%) invert(20%) sepia(41%) saturate(1081%) hue-rotate(253deg) brightness(94%) contrast(84%);
+    padding-bottom: 130px;
 }
 
 /* Animation code for the new Item Form collapse */
